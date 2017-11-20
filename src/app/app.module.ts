@@ -5,26 +5,36 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
+import { DataProvider } from '../providers/data/data';
+import { RedditProvider } from '../providers/reddit/reddit';
+
+import { HttpModule } from '@angular/http';
+import { IonicStorageModule } from '@ionic/storage';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { Keyboard } from '@ionic-native/keyboard';
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    HttpModule,
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    InAppBrowser,
+    Keyboard,
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    DataProvider,
+    RedditProvider
   ]
 })
 export class AppModule {}
