@@ -1,5 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+
 import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
+import 'rxjs/add/operator/map';
 
 /*
   Generated class for the RedditProvider provider.
@@ -10,8 +12,23 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class RedditProvider {
 
-  constructor(public http: HttpClient) {
-    console.log('Hello RedditProvider Provider');
+  settings: any;
+  loading: boolean = false;
+  posts: any = [];
+  subreddit: string = 'gifs';
+  page: number = 1;
+  perPage: number = 15;
+  after: string;
+  stopIndex: number;
+  sort: string = 'hot';
+  moreCount: number = 0;
+
+  constructor(public http: Http) {
+    
+  }
+
+  fetchData(): void{
+    
   }
 
 }
