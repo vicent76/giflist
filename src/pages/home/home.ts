@@ -46,14 +46,44 @@ export class HomePage {
 
   loadSettings(): void {
     
-    this.redditService.fetchData();
+    this.dataService.getData().then((settings) => {
+      if (settings && typeof(settings) != "undefined"){
+
+        let newSettings = JSON.parse(settings);
+        this.redditService.settings = newSettings;
+
+        if (newSettings.length != 0){
+          this.redditService.sort = newSettings.sort;
+          this.redditService.perPage = newSettings.perPage;
+          this.redditService.subreddit = newSettings.subreddit;
+        }
+      }
+      this.changeSubreddit();
+    });
   }
     showComments(post): void {
       let browser = this.iab.create('http://reddit.com' + post.data.permalink, '_system');
     }
+
     openSettings(): void {
-    console.log("TODO: Implement openSettings()");
+      let settingsModal = this.modalCtrl.create('SettingsPage', {
+        perPage: this.redditService.perPage,
+        sort: this.redditService.sort,
+        subreddit: this.redditService.subreddit
+      });
+
+      settingsModal.onDidDismiss(settings => {
+        if (settings){
+          this.redditService.perPage = settings.perPage;
+          this.redditService.sort = settings.sort;
+          this.redditService.subreddit = settings.subreddit;
+          this.dataService.save(settings);
+          this.changeSubreddit();
+        }
+      });
+      settingsModal.present();
     }
+
     playVideo(e, post): void {
 
       //Create a reference to the video
